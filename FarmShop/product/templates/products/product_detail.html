@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Détails du Produit</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <h1>{{ product.name }}</h1>
+    <p>Description : {{ product.description }}</p>
+    <p>Prix : {{ product.price }} € / {{ product.unit }}</p>
+    <p>Quantité en stock : {{ product.quantity }}</p>
+    <p>Disponibilité : {% if product.quantity > 0 %}Disponible{% else %}Rupture de stock{% endif %}</p>
+</body>
+</html>

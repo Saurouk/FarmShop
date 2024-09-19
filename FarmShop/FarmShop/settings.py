@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,7 +37,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'user',
+    'product',
+    'auth_app',
+    'crispy_bootstrap5',
+    'crispy_forms',
+    'rest_framework',
+
 ]
+
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,11 +62,23 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'FarmShop.urls'
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+        'rest_framework.parsers.FormParser',
+        'rest_framework.parsers.MultiPartParser',
+    ],
+}
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],  # Assurez-vous que 'templates' est bien configuré
+        'APP_DIRS': True,  # Permet de chercher les templates dans les dossiers des apps
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -67,6 +90,8 @@ TEMPLATES = [
     },
 ]
 
+
+
 WSGI_APPLICATION = 'FarmShop.wsgi.application'
 
 
@@ -75,10 +100,18 @@ WSGI_APPLICATION = 'FarmShop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',  # Utiliser MySQL backend
+        'NAME': 'farmshop',  # Remplace par le nom de ta base de données
+        'USER': 'root',                       # Ton nom d'utilisateur
+        'PASSWORD': '',       # Ton mot de passe
+        'HOST': '127.0.0.1',                  # Adresse du serveur MariaDB
+        'PORT': '3306',                       # Port par défaut de MariaDB
+        'OPTIONS': {
+            'charset': 'utf8mb4',            # Assure la compatibilité des caractères
+        },
     }
 }
+
 
 
 # Password validation
@@ -115,7 +148,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / "static"]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
